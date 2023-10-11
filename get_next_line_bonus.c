@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ddel-bla <ddel-bla@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/12 13:07:41 by ddel-bla          #+#    #+#             */
-/*   Updated: 2023/03/12 13:07:41 by ddel-bla         ###   ########.fr       */
+/*   Created: 2023/03/12 13:07:19 by ddel-bla          #+#    #+#             */
+/*   Updated: 2023/03/12 13:07:19 by ddel-bla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char
 	*ft_read_str(int fd, char *left_str)
@@ -47,7 +47,8 @@ char
 	i = 0;
 	if (!left_str[i])
 		return (NULL);
-	i = ft_get_len(left_str);
+	while (left_str[i] && left_str[i] != '\n')
+		i++;
 	str = (char *)malloc(sizeof(char) * (i + 2));
 	if (!str)
 		return (NULL);
@@ -66,21 +67,22 @@ char
 	return (str);
 }
 
-char	*ft_new_left_str(char *left_str)
+char
+	*ft_new_left_str(char *left_str)
 {
 	int		i;
 	int		j;
 	char	*str;
 
 	i = 0;
-	str = 0;
-	if (!left_str)
-		return (free(left_str), NULL);
 	while (left_str[i] && left_str[i] != '\n')
 		i++;
 	if (!left_str[i])
-		return (free(left_str), NULL);
-	str = (char *)malloc(sizeof(char) * (ft_strlen(left_str) - i));
+	{
+		free(left_str);
+		return (NULL);
+	}
+	str = (char *)malloc(sizeof(char) * (ft_strlen(left_str) - i + 1));
 	if (!str)
 		return (NULL);
 	i++;
@@ -88,43 +90,22 @@ char	*ft_new_left_str(char *left_str)
 	while (left_str[i])
 		str[j++] = left_str[i++];
 	str[j] = 0;
-	return (free(left_str), str);
+	free(left_str);
+	return (str);
 }
 
 char
 	*get_next_line(int fd)
 {
 	char		*line;
-	static char	*left_str;
+	static char	*left_str[1000];
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (0);
-	left_str = ft_read_str(fd, left_str);
-	if (!left_str)
+	left_str[fd] = ft_read_str(fd, left_str[fd]);
+	if (!left_str[fd])
 		return (NULL);
-	line = ft_get_line(left_str);
-	left_str = ft_new_left_str(left_str);
+	line = ft_get_line(left_str[fd]);
+	left_str[fd] = ft_new_left_str(left_str[fd]);
 	return (line);
 }
-/*
-#include <fcntl.h>
-#include <stdio.h>
-
-
-int main(void)
-{
-	int	fd = open("read_error.txt", O_RDONLY);
-	char str[] = "hola\n";
-	char *line = str;
-
-	while ((line = get_next_line(fd)))
-	{
-		//write(1, line, ft_strlen(line));
-		printf("%s", line);
-		free(line);
-	}
-	//system ("leaks a.out");
-	close(fd);
-	return (0);
-}
-*/

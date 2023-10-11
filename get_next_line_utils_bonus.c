@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ddel-bla <ddel-bla@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/12 13:07:34 by ddel-bla          #+#    #+#             */
-/*   Updated: 2023/03/12 13:07:34 by ddel-bla         ###   ########.fr       */
+/*   Created: 2023/03/12 13:07:31 by ddel-bla          #+#    #+#             */
+/*   Updated: 2023/03/12 13:07:31 by ddel-bla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 size_t
 	ft_strlen(char *s)
